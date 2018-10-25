@@ -13,9 +13,11 @@ print		= $ffd2
 ;	- I interrupt
 ;	- Z zero flag
 
-;	absolut address
-;	direct value
-;	indirect address
+;	lda operator
+;	--------------------------------------
+;	absolute address:	lda $1253
+;	direct value:		lda #$45
+;	indirect address:	lda ($fc),y
 
 
 		; program start address
@@ -27,31 +29,35 @@ textloop	lda str,x
 		inx	
 		cmp #$0d
 		bne textloop
-		rts
+		jmp next_print
 
 str		!text "HELLO WORLD!"
 		!byte $0d	; Return
 ; $c01d		-
 
-
-		ldx #$00
-textloop2	lda str_lo,x
+next_print	ldx #$00
+textarrayloop	lda str_lo,x
 		sta $fc
 		lda str_hi,x
 		sta $fd
 
-		ldy #$01
-		lda ($fc),y
+		ldy #$00
+textloop2	lda ($fc),y
 		jsr print
-		inx	
+		iny	
 		cmp #$0d
 		bne textloop2
+
+		inx
+		cpx #$02
+		bne textarrayloop
 		rts
 
-str_lo		!byte #<string1,#<string2
-str_hi		!byte #>string1,#>string2
+str_lo		!byte <string1,<string2
+str_hi		!byte >string1,>string2
 
-		!byte $0d	; Return
 ; $c01d		-
-string1		!text "kkk"
-string2		!text "ppp"
+string1		!text "HELLO "
+		!byte $0d	; Return
+string2		!text "WORLD"
+		!byte $0d	; Return
