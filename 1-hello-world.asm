@@ -32,3 +32,26 @@ textloop	lda str,x
 str		!text "HELLO WORLD!"
 		!byte $0d	; Return
 ; $c01d		-
+
+
+		ldx #$00
+textloop2	lda str_lo,x
+		sta $fc
+		lda str_hi,x
+		sta $fd
+
+		ldy #$01
+		lda ($fc),y
+		jsr print
+		inx	
+		cmp #$0d
+		bne textloop2
+		rts
+
+str_lo		!byte #<string1,#<string2
+str_hi		!byte #>string1,#>string2
+
+		!byte $0d	; Return
+; $c01d		-
+string1		!text "kkk"
+string2		!text "ppp"
