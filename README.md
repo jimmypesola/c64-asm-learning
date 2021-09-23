@@ -1,8 +1,8 @@
 # c64-asm-learning
 Just some learning
 
-## Vice Emulator - How to:
-1. Attach the d64 file to drive # 8 from file menu
+## Vice Emulator - How to run the example programs:
+1. Attach the .d64 file to drive # 8 from file menu
 2. Below the READY prompt, type:
    LOAD "$",8
    LIST
